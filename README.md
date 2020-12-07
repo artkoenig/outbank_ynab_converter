@@ -1,6 +1,6 @@
 This Workflow will upload your Outbank exports to YNAB
 
-If properly configured the workflow runs on Oubank export files added to the specified folder and upload the transactions to the corresponding YNAB accounts. Already uploaded transactions will be skipped.
+If properly configured the workflow runs on Oubank export files added to the specified folder and upload the transactions to the corresponding YNAB accounts. 
 
 
 Requirements:
@@ -9,9 +9,16 @@ Requirements:
 * https://github.com/johnkerl/miller (brew install miller)
 
 
-How it works:
-The workflow uses csvkit and miller for converting the exported file to the upload-ready JSON format. You have to adjust some code here:
-* edit the `filter` section to include accounts you want to be synchronized
-* edit the `sed` section for replacing the account ids with their YNAB specific counterparts (you will need to run `ynab list accounts` to get your account ids from YNAB)
+How to use:
+1. Copy the workflow to your `~/Library/Workflows/Applications/Folder Actions` folder
+2. Create a folder for the Outbank exports and add the workflow for this folder
+3. Run `ynab list accounts` in the terminal and save the account ids - you will need them in the next step
+4. Create a local mapping file `~/.ynab_accounts_mapping.csv` with the account id mapping. It has to contain at least the account numbers of your bank accounts and the corresponding account ids from YNAB
 
-You can check the script result in the system log console (filter for the "logger" process)
+```
+ACCOUNT_NUMBER;YNAB_ACCOUNT_ID
+DE69123456789123456789;xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+DE69123456789123456789;xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+```
+
+Only transactions of the accounts listed in this file will be uploaded to YNAB. Already uploaded transactions will be skipped.

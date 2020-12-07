@@ -162,7 +162,7 @@ end run</string>
 				<dict>
 					<key>COMMAND_STRING</key>
 					<string>logger "Starting YNAB export..."
-/usr/local/bin/in2csv -d ";" -L "de_DE" --date-format "%d.%m.%y" "$1" | /usr/local/bin/mlr --icsv --ojson --jlistwrap put '$Betrag = int($Betrag*1000);$import_id=$Datum.$Betrag' then rename Betrag,amount,Datum,date,Name,payee_name,Zweck,memo,Konto,account_id then cut -f date,payee_name,amount,memo,account_id,import_id then filter '($account_id == "YOUR_ACCOUNT_1" || $account_id == "YOUR_ACCOUNT_2")' | sed 's| YOUR_ACCOUNT_1|YOUR_ACCOUNT_1_YNAB_ID|g; s|YOUR_ACCOUNT_2|YOUR_ACCOUNT_2_YNAB_ID|g;' | cat &lt;(echo -n '{"transactions": ') - &lt;(echo "}") | /usr/local/bin/ynab create transaction -f - | logger
+csvjoin -d ";" -c Konto,ACCOUNT_NUMBER test.csv ~/.ynab_accounts_mapping.csv -L "de_DE" --date-format "%d.%m.%y" | mlr --icsv --ojson --jlistwrap put '$amount = int($Betrag*1000);$import_id=$Datum.$Betrag' then rename Datum,date,Name,payee_name,Zweck,memo,YNAB_ACCOUNT_ID,account_id then cut -f date,payee_name,amount,memo,account_id,import_id | cat &lt;(echo -n '{"transactions": ') - &lt;(echo "}") | ynab create transaction -f - | logger
 </string>
 					<key>CheckedForUserDefaultShell</key>
 					<true/>
