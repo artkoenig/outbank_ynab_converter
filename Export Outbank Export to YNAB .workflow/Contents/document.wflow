@@ -162,7 +162,7 @@ end run</string>
 				<dict>
 					<key>COMMAND_STRING</key>
 					<string>logger "Starting YNAB export..."
-csvjoin -d ";" -c Konto,ACCOUNT_NUMBER test.csv ~/.ynab_accounts_mapping.csv -L "de_DE" --date-format "%d.%m.%y" | mlr --icsv --ojson --jlistwrap put '$amount = int($Betrag*1000);$import_id=$Datum.$Betrag' then rename Datum,date,Name,payee_name,Zweck,memo,YNAB_ACCOUNT_ID,account_id then cut -f date,payee_name,amount,memo,account_id,import_id | cat &lt;(echo -n '{"transactions": ') - &lt;(echo "}") | ynab create transaction -f - | logger
+/usr/local/bin/csvjoin -d ";" -c Konto,ACCOUNT_NUMBER "$1" ~/.ynab_accounts_mapping.csv -L "de_DE" --date-format "%d.%m.%y" | /usr/local/bin/mlr --icsv --ojson --jlistwrap put '$amount = int($Betrag*1000);$import_id=$Datum.$Betrag;$cleared="cleared"' then rename Datum,date,Name,payee_name,Zweck,memo,YNAB_ACCOUNT_ID,account_id then cut -f date,payee_name,amount,memo,account_id,import_id,cleared | cat &lt;(echo -n '{"transactions": ') - &lt;(echo "}") | /usr/local/bin/ynab create transaction -f - | logger
 </string>
 					<key>CheckedForUserDefaultShell</key>
 					<true/>
@@ -278,7 +278,7 @@ csvjoin -d ";" -c Konto,ACCOUNT_NUMBER test.csv ~/.ynab_accounts_mapping.csv -L 
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>389.500000:399.000000</string>
+				<string>389.500000:521.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Run Shell Script.action/Contents/Resources/Base.lproj/main.nib</string>
 			</dict>
@@ -288,7 +288,7 @@ csvjoin -d ";" -c Konto,ACCOUNT_NUMBER test.csv ~/.ynab_accounts_mapping.csv -L 
 	</array>
 	<key>connectors</key>
 	<dict>
-		<key>39EB0A74-8E21-43FC-81BB-0E3CA5B61AAF</key>
+		<key>2814E27F-0009-4B5E-9C7A-322EF941D8AE</key>
 		<dict>
 			<key>from</key>
 			<string>0B726B94-4381-46B4-9A2F-C7CFFBA51E3D - 0B726B94-4381-46B4-9A2F-C7CFFBA51E3D</string>
